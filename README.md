@@ -7,9 +7,9 @@ Git to clone the repository
 
 Using Docker
 
-git clone[ <your-repo-url>](https://github.com/manojkumar377/Pixel_Triage_)
+git clone https://github.com/manojkumar377/Pixel_Triage_
 
-cd [<repo-directory>](https://github.com/manojkumar377/Pixel_Triage_)
+cd https://github.com/manojkumar377/Pixel_Triage_
 
 docker build -t ai-forensics .
 
