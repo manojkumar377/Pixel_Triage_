@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  ai_image_forensics:
+    build: .
+    container_name: ai_image_forensics_tool
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

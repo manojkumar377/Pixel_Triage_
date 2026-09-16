@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Forensics - Multi-Agent Verification Suite</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN for Multi-Agent Radar Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-background"></div>
+
+    <main class="container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="brand">
+                <span class="logo-icon">🛡️</span>
+                <div>
+                    <h1>Pixel<span class="highlight">Triage AI</span></h1>
+                    <p class="subtitle">Multi-Agent Forensic Image Inspection & Authenticity Engine</p>
+                </div>
+            </div>
+            <div class="system-status">
+                <span class="status-dot"></span> 5 Forensic Agents Active
+            </div>
+        </header>
+
+        <!-- Upload & Drag/Drop Area -->
+        <section class="upload-section" id="upload-section">
+            <div class="drop-zone" id="drop-zone">
+                <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" hidden>
+                <div class="drop-zone-content">
+                    <div class="upload-icon-wrapper">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    <h2>Drag & Drop your image here</h2>
+                    <p>Supports JPG, PNG, WEBP (Max 15MB)</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                        Select Image File
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading / Agent Progress Overlay -->
+        <section class="loading-section hidden" id="loading-section">
+            <div class="loader-card glass-panel">
+                <div class="spinner"></div>
+                <h3 id="loader-status">Running Multi-Agent Inspection...</h3>
+                <div class="agent-steps" id="agent-steps">
+                    <div class="step-item" id="step-metadata"><span>🔍</span> Metadata & Software Agent</div>
+                    <div class="step-item" id="step-c2pa"><span>🔐</span> C2PA Provenance Agent</div>
+                    <div class="step-item" id="step-ela"><span>📊</span> Error Level Analysis (ELA)</div>
+                    <div class="step-item" id="step-fft"><span>🌐</span> 2D FFT Frequency Agent</div>
+                    <div class="step-item" id="step-judge"><span>⚖️</span> Judge Consensus Engine</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Dashboard -->
+        <section class="results-section hidden" id="results-section">
+            <!-- Verdict Hero Panel -->
+            <div class="verdict-card glass-panel" id="verdict-card">
+                <div class="verdict-header">
+                    <div>
+                        <span class="file-name-badge" id="res-filename">image.png</span>
+                        <h2 class="verdict-title" id="verdict-title">Analysis Complete</h2>
+                    </div>
+                    <button class="btn btn-secondary" onclick="resetApp()">Analyze Another Image</button>
+                </div>
+
+                <div class="verdict-body">
+                    <!-- Gauge Meter -->
+                    <div class="score-gauge-box">
+                        <div class="score-circle" id="score-circle">
+                            <div class="score-inner">
+                                <span class="score-value" id="score-value">0%</span>
+                                <span class="score-label">AI Likelihood</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verdict Info -->
+                    <div class="verdict-details">
+                        <div class="badge-wrapper">
+                            <span class="verdict-badge" id="verdict-badge">AI GENERATED</span>
+                            <span class="confidence-pill" id="confidence-pill">98% Confidence</span>
+                        </div>
+                        <p class="verdict-desc" id="verdict-desc">
+                            The Judge Agent aggregated signals from 5 specialized analyzers to determine image authenticity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Layout for Radar Chart & Forensic Visualizer -->
+            <div class="dashboard-grid">
+                <!-- Multi-Agent Radar Graph -->
+                <div class="card glass-panel">
+                    <h3>Multi-Agent Anomaly Score Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Interactive Visualizer (Original vs ELA vs FFT) -->
+                <div class="card glass-panel">
+                    <div class="tabs-header">
+                        <h3>Forensic Heatmap Inspector</h3>
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="tab-orig" onclick="switchTab('tab-orig')">Original</button>
+                            <button class="tab-btn" data-tab="tab-ela" onclick="switchTab('tab-ela')">ELA Heatmap</button>
+                            <button class="tab-btn" data-tab="tab-fft" onclick="switchTab('tab-fft')">2D FFT Spectrum</button>
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-orig">
+                            <img id="img-preview-orig" src="" alt="Original Input">
+                        </div>
+                        <div class="tab-pane" id="tab-ela">
+                            <img id="img-preview-ela" src="" alt="ELA Heatmap">
+                            <p class="caption">Red/Yellow highlights indicate anomalous re-compression error variations.</p>
+                        </div>
+                        <div class="tab-pane" id="tab-fft">
+                            <img id="img-preview-fft" src="" alt="FFT Spectrum">
+                            <p class="caption">2D Fourier log magnitude spectrum. Periodic outer lattice points indicate neural upsampler signatures.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forensic Evidence Bullet Points Card -->
+            <div class="card glass-panel evidence-card">
+                <h3>Forensic Evidence & Agent Findings</h3>
+                <ul class="reasoning-list" id="reasoning-list">
+                    <!-- Dynamic bullet points -->
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
